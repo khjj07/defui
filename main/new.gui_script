@@ -1,0 +1,14 @@
+local defui = require "defui.defui"
+local UI = require "main.new"
+function init(self)
+	defui.init(self)
+	UI.init(self)
+	defui.set_grid_layout(self, "box")
+	:set_standard(vmath.vector3(-100,150,0))
+	:set_offset(80)
+	msg.post(".", "acquire_input_focus")
+end
+
+function on_input(self, action_id, action)
+	defui.on_input(self, action_id, action)
+end

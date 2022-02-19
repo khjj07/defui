@@ -1,0 +1,101 @@
+local M = {}
+function split(str,delimiter)
+    local result = { }
+    local from = 1
+    local delim_from, delim_to = string.find( str, delimiter, from )
+    while delim_from do
+        table.insert( result, string.sub( str, from , delim_from-1 ) )
+        from = delim_to + 1
+        delim_from, delim_to = string.find( str, delimiter, from )
+    end
+    table.insert( result, string.sub( str, from ) )
+    return result
+end
+
+local function ends_with(str, ending)
+    return ending == "" or str:sub(-#ending) == ending
+end
+
+local function is_add_active(opts)
+	if editor.can_get(opts.selection, "path") and ends_with(editor.get(opts.selection, "path"), ".gui") then
+		return true
+	else
+		return false
+	end
+end
+
+local function get_file_path(file)
+	local str = editor.get(file, "path")
+	return str
+end
+
+local function tovector(vec)
+	if vec.w then
+		return "vmath.vector4("..string.sub(vec.x, 1,string.len(vec.x)-1)..","..string.sub(vec.y, 1,string.len(vec.y)-1)..","..string.sub(vec.z, 1,string.len(vec.z)-1)..","..string.sub(vec.w, 1,string.len(vec.w)-1)..")"
+	else
+		return "vmath.vector3("..string.sub(vec.x, 1,string.len(vec.x)-1)..","..string.sub(vec.y, 1,string.len(vec.y)-1)..","..string.sub(vec.z, 1,string.len(vec.z)-1)..")"
+	end
+end
+
+local function parse_gui(data)
+	local result = "local G={}\nlocal box_node = require \"defui.module.box_node\"\nlocal text_node = require \"defui.module.text_node\"\nfunction G.init(self)\n\tself.node={}\n\tself.box_node={}\n\tself.text_node={}\n"
+	local line = split(data,"\n")
+	local type = "TYPE_BOX"
+	local name = "box"
+	local parent = "nil"
+	for i=1,#line do
+		if string.find(line[i], "id:") then
+			name = split(line[i],"\"")[2]
+		elseif string.find(line[i], "parent: ") then
+			parent = "self.node[\""..split(line[i],"\"")[2].."\"]" 
+		elseif string.find(line[i], "size_mode") then
+			result= result.."\tself.node[\""..name.."\"]=box_node.create(gui.get_node(\""..name.."\"),"..parent..")\n"
+			parent = "nil"
+		elseif string.find(line[i], "text_tracking:") then
+			result= result.."\tself.node[\""..name.."\"]=text_node.create(gui.get_node(\""..name.."\"),"..parent..")\n"
+			parent = "nil"
+		end
+	end
+	result=result.."end\nreturn G"
+	return result
+end
+
+local function add_module(opts)
+    local str=get_file_path(opts.selection)
+    local point_start,point_end =  string.find(str, ".gui")
+    str = string.sub(str,1,point_start-1)
+    local gui_file = io.open("."..str..".gui", "r")
+    local data = gui_file:read("*a")
+    local lua_file = io.open("."..str..".lua", "w")
+    lua_file:write(parse_gui(data))
+    gui_file:close()
+    lua_file:close()
+end
+
+
+
+function M.get_commands()
+    return {
+        {
+            label="Update Gui Module",
+            locations = {"Outline"},
+            query = {
+                selection = {type = "outline", cardinality = "one"}
+            },
+            active = is_add_active,
+            run = add_module
+		},
+		{
+			label="Update Gui Module",
+			locations = {"Assets"},
+			query = {
+				selection = {type = "resource", cardinality = "one"}
+			},
+			active = is_add_active,
+			run = add_module
+		},
+       
+    }
+end
+
+return M
