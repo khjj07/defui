@@ -14,3 +14,6 @@ input_method = HiddenInputField
 [project]
 title = defui
 
+[library]
+include_dirs = defui
+
