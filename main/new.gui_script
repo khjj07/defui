@@ -12,3 +12,4 @@ end
 function on_input(self, action_id, action)
 	defui.on_input(self, action_id, action)
 end
+

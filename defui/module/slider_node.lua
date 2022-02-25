@@ -66,7 +66,7 @@ function S.create(box)
 	
 	function new_node:pressed(self,action_id,action)
 		if new_node.enabled and new_node:pick_node(action.x,action.y) and action_id==hash("touch") and action.pressed  then
-			local func = func_list.pressed
+			local func = new_node.func_list.pressed
 			if func then
 				func(self,action_id,action,new_node)
 			end
@@ -76,7 +76,7 @@ function S.create(box)
 	end
 	function new_node:pressing(self,action_id,action)
 		if new_node.enabled and action_id==hash("touch") and new_node.press then
-			local func = func_list.pressing
+			local func = new_node.func_list.pressing
 			local mouse_pos=vmath.vector3(action.screen_x,action.screen_y,0)
 			
 			if func then
@@ -116,7 +116,7 @@ function S.create(box)
 	end
 	function new_node:released(self,action_id,action)
 		if new_node.enabled and action_id==hash("touch") and action.released then
-			local func = func_list.released 
+			local func = new_node.func_list.released 
 			if func then
 				func(self,action_id,action,new_node)
 			end
