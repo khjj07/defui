@@ -11,6 +11,11 @@ function D.create(box,drop_box)
 		return new_node
 	end
 
+	function new_node:on_pressing(func)
+		new_node.func_list.pressing=func
+		return new_node
+	end
+
 	function new_node:on_released(func)
 		new_node.func_list.released=func
 		return new_node
