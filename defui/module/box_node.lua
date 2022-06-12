@@ -2,7 +2,7 @@ local N={}
 
 
 local function delete_child(node)
-	gui.set_parent(new_node.id, nil, transform)
+	gui.set_parent(node.id, nil, transform)
 	for _, c in pairs(node.parent.child) do
 		if c==node then
 			table.remove(node.parent.child,_)
