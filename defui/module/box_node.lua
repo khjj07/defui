@@ -18,7 +18,7 @@ function N.create(id,parent)
 	local new_node={id=id,parent=parent}
 	new_node.enabled=true
 	new_node.child={}
-	new_node.callback={}
+	new_node.callback={hide=nil,show=nil,delete=nil}
 
 	if parent then
 		table.insert(parent.child, new_node)
