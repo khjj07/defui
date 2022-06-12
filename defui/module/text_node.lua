@@ -136,7 +136,7 @@ function N.create(id,parent)
 
 
 	function new_node:cancel_animation(property)
-		gui.cancel_animation(new_node.id, new_node.property)
+		gui.cancel_animation(new_node.id, property)
 		return new_node
 	end
 
