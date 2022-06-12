@@ -2,11 +2,13 @@ local N={}
 
 
 local function delete_child(node)
-	gui.set_parent(node.id, nil, transform)
-	for _, c in pairs(node.parent.child) do
-		if c==node then
-			table.remove(node.parent.child,_)
-			break
+	gui.set_parent(node.id, nil)
+	if node.parent then
+		for _, c in pairs(node.parent.child) do
+			if c==node then
+				table.remove(node.parent.child,_)
+				break
+			end
 		end
 	end
 	node.parent=nil
