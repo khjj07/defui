@@ -87,7 +87,7 @@ function N.create(id,parent)
 	end
 	
 	function new_node:delete()
-		delete_child(node)
+		delete_child(new_node)
 		gui.delete_node(new_node.id)
 		local func = new_node.callback.delete
 		func(self,new_node)
