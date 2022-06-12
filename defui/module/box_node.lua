@@ -81,7 +81,6 @@ function N.create(id,parent)
 				table.insert(new_node.parent.child, new_node)
 			end
 		else
-			
 			delete_child(new_node)
 		end
 		new_node.parent=parent
@@ -92,7 +91,9 @@ function N.create(id,parent)
 		delete_child(new_node)
 		gui.delete_node(new_node.id)
 		local func = new_node.callback.delete
-		func(self,new_node)
+		if func then
+			func(self,new_node)
+		end
 	end
 	
 	
