@@ -19,10 +19,21 @@ function D.create_button(self,name,box)
 	return self.button[name]
 end
 
+function D.delete_button(self,name)
+	self.button[name] = nil
+	self.node[name] = nil
+end
+
+
 function D.create_slider(self,name,box)
 	box=box or self.node[name]
 	self.slider[name]=slider_node.create(box)
 	return self.slider[name]
+end
+
+function D.delete_slider(self,name)
+	self.slider[name] = nil
+	self.node[name] = nil
 end
 
 function D.create_scroll_view(self,name1,name2,box,content)
@@ -32,17 +43,33 @@ function D.create_scroll_view(self,name1,name2,box,content)
 	return self.scroll_view[name1]
 end
 
+function D.delete_scroll_view(self,name)
+	self.scroll_view[name] = nil
+	self.node[name] = nil
+end
+
 function D.create_drag_box(self,name,box)
 	box=box or self.node[name]
 	self.drag_box[name]=drag_box_node.create(box)
 	return self.drag_box[name]
 end
 
+function D.delete_drag_box(self,name)
+	self.drag_box[name] = nil
+	self.node[name] = nil
+end
+
+
 function D.create_toggle(self,name1,name2,box,mark)
 	box=box or self.node[name1]
 	mark=mark or self.node[name2]
 	self.toggle[name1]=toggle_node.create(box,mark)
 	return self.toggle[name1]
+end
+
+function D.delete_toggle(self,name)
+	self.toggle[name] = nil
+	self.node[name] = nil
 end
 
 function D.create_input_field(self,name1,name2,box,text)
@@ -52,6 +79,11 @@ function D.create_input_field(self,name1,name2,box,text)
 	return self.input_field[name1]
 end
 
+function D.delete_input_field(self,name)
+	self.input_field[name] = nil
+	self.node[name] = nil
+end
+
 function D.create_dropdown(self,name1,name2,box,drop_box)
 	box=box or self.node[name1]
 	drop_box=drop_box or self.node[name2]
@@ -59,9 +91,19 @@ function D.create_dropdown(self,name1,name2,box,drop_box)
 	return self.dropdown[name1]
 end
 
+function D.delete_dropdown(self,name)
+	self.dropdown[name] = nil
+	self.node[name] = nil
+end
+
 function D.create_flow(self,name)
 	self.flow[name]=flow.create(name)
 	return self.flow[name]
+end
+
+function D.delete_flow(self,name)
+	self.flow[name] = nil
+	self.node[name] = nil
 end
 
 function D.set_vertical_layout(self,name,box)
