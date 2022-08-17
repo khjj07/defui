@@ -13,6 +13,7 @@ input_method = HiddenInputField
 
 [project]
 title = defui
+dependencies = 
 
 [library]
 include_dirs = defui

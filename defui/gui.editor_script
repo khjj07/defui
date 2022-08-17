@@ -38,23 +38,21 @@ local function tovector(vec)
 end
 
 local function parse_gui(data)
-	local result = "local G={}\nlocal box_node = require \"defui.module.box_node\"\nlocal text_node = require \"defui.module.text_node\"\nfunction G.init(self)\n\tself.node={}\n\tself.box_node={}\n\tself.text_node={}\n"
+	local result = "local G={}\nlocal node = require \"defui.module.node\"\nfunction G.init(self)\n\tself.node={}\n"
 	local line = split(data,"\n")
-	local type = "TYPE_BOX"
-	local name = "box"
 	local parent = "nil"
+	local name = nil
 	for i=1,#line do
 		if string.find(line[i], "id:") then
 			name = split(line[i],"\"")[2]
 		elseif string.find(line[i], "parent: ") then
-			parent = "self.node[\""..split(line[i],"\"")[2].."\"]" 
-		elseif string.find(line[i], "size_mode") then
-			result= result.."\tself.node[\""..name.."\"]=box_node.create(gui.get_node(\""..name.."\"),"..parent..")\n"
+			parent = "self.node[\""..split(line[i],"\"")[2].."\"]"
+		elseif string.find(line[i], "custom_type: ") then
+			result= result.."\tself.node[\""..name.."\"]=node.create(gui.get_node(\""..name.."\"),"..parent..")\n"
 			parent = "nil"
-		elseif string.find(line[i], "text_tracking:") then
-			result= result.."\tself.node[\""..name.."\"]=text_node.create(gui.get_node(\""..name.."\"),"..parent..")\n"
-			parent = "nil"
+			name=nil
 		end
+		
 	end
 	result=result.."end\nreturn G"
 	return result

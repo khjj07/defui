@@ -1,6 +1,6 @@
-local G={}
+local M={}
 
-function G.create(name)
+function M.create(name)
 	local new_flow={name=name,list={},index_flag=1}
 	function new_flow:add(box)
 		box:set_position(vmath.vector3(10000,0,0))
@@ -71,4 +71,4 @@ function G.create(name)
 	return new_flow
 end
 
-return G
+return M

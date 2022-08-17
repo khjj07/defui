@@ -1,5 +1,4 @@
-local N={}
-
+local M={}
 
 local function delete_child(node)
 	gui.set_parent(node.id, nil)
@@ -14,21 +13,39 @@ local function delete_child(node)
 	node.parent=nil
 end
 
-function N.create(id,parent)
+function M.create(id,parent)
 	local new_node={id=id,parent=parent}
-	new_node.enabled=true
-	new_node.child={}
-	new_node.callback={hide=nil,show=nil,delete=nil}
-
+	
 	if parent then
 		table.insert(parent.child, new_node)
 	end
+	
+	new_node.enabled=true
+	new_node.child={}
+	new_node.event_list={}
+	new_node.event_list.show={}
+	new_node.event_list.hide={}
+	new_node.event_list.delete={}
+	for _, event in pairs(new_node.event_list) do
+		setmetatable(event, event_meta)
+	end
+
 	function new_node:on_show(func)
-		new_node.callback.show=func
+		local temp={coroutine.create(func(self,action_id,action))}
+		setmetatable(temp, event_meta)
+		new_node.event_list.show=new_node.event_list.show+temp
 		return new_node
 	end
 	function new_node:on_hide(func)
-		new_node.callback.hide=func
+		local temp={coroutine.create(func(self,action_id,action))}
+		setmetatable(temp, event_meta)
+		new_node.event_list.hide=new_node.event_list.hide+temp
+		return new_node
+	end
+	function new_node:on_delete(func)
+		local temp={coroutine.create(func(self,action_id,action))}
+		setmetatable(temp, event_meta)
+		new_node.event_list.delete=new_node.event_list.delete+temp
 		return new_node
 	end
 	
@@ -39,9 +56,10 @@ function N.create(id,parent)
 			for _, c in pairs(new_node.child) do
 				c:hide(true)
 			end
-			local func = new_node.callback.hide
-			if func then
-				func(self,new_node)
+			local event = new_node.event_list.hide
+			for _, v in pairs(event) do
+				local t = coroutine.create(v)
+				coroutine.resume(t,self,action_id,action)
 			end
 		else
 			new_node.enabled=false
@@ -59,9 +77,10 @@ function N.create(id,parent)
 			for _, c in pairs(new_node.child) do
 				c:show(true)
 			end
-			local func = new_node.callback.show
-			if func then
-				func(self,new_node)
+			local event = new_node.event_list.show
+			for _, v in pairs(event) do
+				local t = coroutine.create(v)
+				coroutine.resume(t,self,action_id,action)
 			end
 		elseif gui.is_enabled(new_node.id) then
 			new_node.enabled=true
@@ -90,12 +109,12 @@ function N.create(id,parent)
 	function new_node:delete()
 		delete_child(new_node)
 		gui.delete_node(new_node.id)
-		local func = new_node.callback.delete
-		if func then
-			func(self,new_node)
+		local event = new_node.event_list.delete
+		for _, v in pairs(event) do
+			local t = coroutine.create(v)
+			coroutine.resume(t,self,action_id,action)
 		end
 	end
-	
 	
 	function new_node:animate(property, to, easing, duration,delay,complete_function,playback)
 		delay=delay or 0
@@ -289,16 +308,15 @@ function N.create(id,parent)
 	function new_node:pick_node(x,y)
 		return gui.pick_node(new_node.id, x, y)
 	end
-	new_node.ininitial_position=new_node:get_position()
-	new_node.ininitial_rotation=new_node:get_rotation()
-	new_node.ininitial_scale=new_node:get_scale()
-	new_node.ininitial_size=new_node:get_size()
-	new_node.ininitial_slice_9=new_node:get_slice9()
-	new_node.ininitial_color=new_node:get_color()
-	new_node.ininitial_layer=new_node:get_layer()
-	new_node.ininitial_screen_position=new_node:get_screen_position()
-	
+	new_node.initial_position=new_node:get_position()
+	new_node.initial_rotation=new_node:get_rotation()
+	new_node.initial_scale=new_node:get_scale()
+	new_node.initial_size=new_node:get_size()
+	new_node.initial_slice_9=new_node:get_slice9()
+	new_node.initial_color=new_node:get_color()
+	new_node.initial_layer=new_node:get_layer()
+	new_node.initial_screen_position=new_node:get_screen_position()
 	return new_node
 end
 
-return N
+return M

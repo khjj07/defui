@@ -1,6 +1,5 @@
 local D={}
-local box_node = require "defui.module.box_node"
-local text_node = require "defui.module.text_node"
+local node = require "defui.module.node"
 local button_node = require "defui.module.button_node"
 local slider_node = require "defui.module.slider_node"
 local scroll_view_node = require "defui.module.scroll_view_node"
@@ -11,11 +10,10 @@ local dropdown_node = require "defui.module.dropdown_node"
 local vertical_layout = require "defui.layout.vertical_layout"
 local horizontal_layout = require "defui.layout.horizontal_layout"
 local grid_layout = require "defui.layout.grid_layout"
-local flow = require "defui.module.gui_flow"
 
-function D.create_button(self,name,box)
-	box=box or self.node[name]
-	self.button[name]=button_node.create(box)
+function D.create_button(self,name,node)
+	node=node or self.node[name]
+	self.button[name]=button_node.create(node)
 	return self.button[name]
 end
 
@@ -24,10 +22,9 @@ function D.delete_button(self,name)
 	self.node[name] = nil
 end
 
-
-function D.create_slider(self,name,box)
-	box=box or self.node[name]
-	self.slider[name]=slider_node.create(box)
+function D.create_slider(self,name,node)
+	node=node or self.node[name]
+	self.slider[name]=slider_node.create(node)
 	return self.slider[name]
 end
 
@@ -36,10 +33,10 @@ function D.delete_slider(self,name)
 	self.node[name] = nil
 end
 
-function D.create_scroll_view(self,name1,name2,box,content)
-	box=box or self.node[name1]
+function D.create_scroll_view(self,name1,name2,node,content)
+	node=node or self.node[name1]
 	content=content or self.node[name2]
-	self.scroll_view[name1]=scroll_view_node.create(box,content)
+	self.scroll_view[name1]=scroll_view_node.create(node,content)
 	return self.scroll_view[name1]
 end
 
@@ -48,9 +45,9 @@ function D.delete_scroll_view(self,name)
 	self.node[name] = nil
 end
 
-function D.create_drag_box(self,name,box)
-	box=box or self.node[name]
-	self.drag_box[name]=drag_box_node.create(box)
+function D.create_drag_box(self,name,node)
+	node=node or self.node[name]
+	self.drag_box[name]=drag_box_node.create(node)
 	return self.drag_box[name]
 end
 
@@ -60,10 +57,10 @@ function D.delete_drag_box(self,name)
 end
 
 
-function D.create_toggle(self,name1,name2,box,mark)
-	box=box or self.node[name1]
+function D.create_toggle(self,name1,name2,node,mark)
+	node=node or self.node[name1]
 	mark=mark or self.node[name2]
-	self.toggle[name1]=toggle_node.create(box,mark)
+	self.toggle[name1]=toggle_node.create(node,mark)
 	return self.toggle[name1]
 end
 
@@ -72,10 +69,10 @@ function D.delete_toggle(self,name)
 	self.node[name] = nil
 end
 
-function D.create_input_field(self,name1,name2,box,text)
-	box=box or self.node[name1]
+function D.create_input_field(self,name1,name2,node,text)
+	node=node or self.node[name1]
 	text=text or self.node[name2]
-	self.input_field[name1]=input_field_node.create(box,text)
+	self.input_field[name1]=input_field_node.create(node,text)
 	return self.input_field[name1]
 end
 
@@ -84,10 +81,10 @@ function D.delete_input_field(self,name)
 	self.node[name] = nil
 end
 
-function D.create_dropdown(self,name1,name2,box,drop_box)
-	box=box or self.node[name1]
+function D.create_dropdown(self,name1,name2,node,drop_box)
+	node=node or self.node[name1]
 	drop_box=drop_box or self.node[name2]
-	self.dropdown[name1]=dropdown_node.create(box,drop_box)
+	self.dropdown[name1]=dropdown_node.create(node,drop_box)
 	return self.dropdown[name1]
 end
 
@@ -106,19 +103,19 @@ function D.delete_flow(self,name)
 	self.node[name] = nil
 end
 
-function D.set_vertical_layout(self,name,box)
-	box=box or self.node[name]
-	return vertical_layout.create(box)
+function D.set_vertical_layout(self,name,node)
+	node=node or self.node[name]
+	return vertical_layout.create(node)
 end
 
-function D.set_horizontal_layout(self,name,box)
-	box=box or self.node[name]
-	return horizontal_layout.create(box)
+function D.set_horizontal_layout(self,name,node)
+	node=node or self.node[name]
+	return horizontal_layout.create(node)
 end
 
-function D.set_grid_layout(self,name,box)
-	box=box or self.node[name]
-	return grid_layout.create(box)
+function D.set_grid_layout(self,name,node)
+	node=node or self.node[name]
+	return grid_layout.create(node)
 end
 
 function D.init(self)
@@ -131,6 +128,9 @@ function D.init(self)
 	self.dropdown={}
 	self.flow={}
 end
+
+
+
 
 function D.on_input(self, action_id, action)
 	for _, button in pairs(self.button) do
