@@ -5,7 +5,7 @@ DefUI is a UI tool created to solve the hassle of UI work.
 
 
 
-##Installation
+## Installation
 
 Install DefUI in your project by adding it as a [library dependency](https://www.defold.com/manuals/libraries/). Open your game.project file and in the "Dependencies" field under "Project", add:
 
@@ -15,7 +15,7 @@ https://github.com/khjj07/defui/archive/refs/tags/1.1.0.zip
 
 Then open the "Project" menu of the editor and click "Fetch Libraries". You should see the "defui" folder appear in your assets panel after a few moments.
 
-##How to use
+## How to use
 
 1. Press the Update gui module
 ![20220818_053934](https://user-images.githubusercontent.com/57747205/185238722-dd1522b0-9d11-43d1-886b-eb5b5d5e9038.png)
@@ -39,7 +39,7 @@ function on_input(self,action_id,action)
 end
 ```
 
-##Example
+## Example
 new.module
 ```lua
 local G={}
@@ -80,4 +80,4 @@ end
 ```
 
 
-##Document
+## Document
