@@ -1,15 +1,22 @@
-local defui =require "defui.defui"
-local ui= require "main.new"
 function init(self)
-	defui.init(self)
-	ui.init(self)
-	defui.create_button(self, "box")
-	:on_pressed(function(self,action_id,action)
-		
-	end)
-
+	self.button = gui.get_node("box")
+	self.button_pressed=false
 	msg.post(".", "acquire_input_focus")
 end
 function on_input(self, action_id, action)
-	defui.on_input(self, action_id, action)
+	if gui.pick_node(self.button, action.x, action.y) then
+		if action_id==hash("touch") then
+			if action.pressed then
+				self.button_pressed=true
+				print("button_pressed")
+			elseif action.released and self.button_pressed then
+				self.button_pressed=false
+				print("button_released")
+			elseif self.button_pressed then
+				print("button_pressing")
+			end
+		else
+			print("button_hover")
+		end
+	end
 end

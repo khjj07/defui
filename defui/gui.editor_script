@@ -47,7 +47,7 @@ local function parse_gui(data)
 			name = split(line[i],"\"")[2]
 		elseif string.find(line[i], "parent: ") then
 			parent = "self.node[\""..split(line[i],"\"")[2].."\"]"
-		elseif string.find(line[i], "custom_type: ") then
+		elseif string.find(line[i], "nodes") and name then
 			result= result.."\tself.node[\""..name.."\"]=node.create(gui.get_node(\""..name.."\"),"..parent..")\n"
 			parent = "nil"
 			name=nil
