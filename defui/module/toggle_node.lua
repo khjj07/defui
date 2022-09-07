@@ -45,7 +45,7 @@ function M.create(box,mark)
 			local event = new_node.event_list.pressed
 			for _, v in pairs(event) do
 				local t = coroutine.create(v)
-				coroutine.resume(t,self,action_id,action)
+				coroutine.resume(t,self,action_id,action,new_node)
 			end
 		
 		end
@@ -56,7 +56,7 @@ function M.create(box,mark)
 			local event = new_node.event_list.pressing
 			for _, v in pairs(event) do
 				local t = coroutine.create(v)
-				coroutine.resume(t,self,action_id,action)
+				coroutine.resume(t,self,action_id,action,new_node)
 			end
 		end
 	end
@@ -66,7 +66,7 @@ function M.create(box,mark)
 			local event = new_node.event_list.released
 			for _, v in pairs(event) do
 				local t = coroutine.create(v)
-				coroutine.resume(t,self,action_id,action)
+				coroutine.resume(t,self,action_id,action,new_node)
 			end
 			new_node.press=false
 			new_node.check = not new_node.check
@@ -83,13 +83,13 @@ function M.create(box,mark)
 			local event = new_node.event_list.hover
 			for _, v in pairs(event) do
 				local t = coroutine.create(v)
-				coroutine.resume(t,self,action_id,action)
+				coroutine.resume(t,self,action_id,action,new_node)
 			end
 		elseif new_node.enabled and not new_node:pick_node(action.x,action.y) then 
 			local event = new_node.event_list.not_hover
 			for _, v in pairs(event) do
 				local t = coroutine.create(v)
-				coroutine.resume(t,self,action_id,action)
+				coroutine.resume(t,self,action_id,action,new_node)
 			end
 		end
 	end

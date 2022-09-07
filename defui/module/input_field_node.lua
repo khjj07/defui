@@ -13,8 +13,6 @@ function M.create(box,text)
 	new_node.event_list.text={}
 	new_node.event_list.delete={}
 
-
-
 	function new_node:on_pressed(func)
 		table.insert(new_node.event_list.pressed, func)
 		return new_node
@@ -56,7 +54,7 @@ function M.create(box,text)
 			local event = new_node.event_list.pressed
 			for _, v in pairs(event) do
 				local t = coroutine.create(v)
-				coroutine.resume(t,self,action_id,action)
+				coroutine.resume(t,self,action_id,action,new_node)
 			end
 		end
 	end
@@ -66,7 +64,7 @@ function M.create(box,text)
 			local event = new_node.event_list.pressing
 			for _, v in pairs(event) do
 				local t = coroutine.create(v)
-				coroutine.resume(t,self,action_id,action)
+				coroutine.resume(t,self,action_id,action,new_node)
 			end
 		end
 	end
@@ -76,7 +74,7 @@ function M.create(box,text)
 			local event = new_node.event_list.released
 			for _, v in pairs(event) do
 				local t = coroutine.create(v)
-				coroutine.resume(t,self,action_id,action)
+				coroutine.resume(t,self,action_id,action,new_node)
 			end
 			new_node.input=true
 		elseif action_id==hash("touch") and action.released then
@@ -90,14 +88,14 @@ function M.create(box,text)
 			local event = new_node.event_list.text
 			for _, v in pairs(event) do
 				local t = coroutine.create(v)
-				coroutine.resume(t,self,action_id,action)
+				coroutine.resume(t,self,action_id,action,new_node)
 			end
 		elseif new_node.enabled and new_node.input and action_id==hash("backspace") and (action.pressed or action.repeated)  then
 			text=string.sub(text, 1,string.len(text)-1)
 			local event = new_node.event_list.delete
 			for _, v in pairs(event) do
 				local t = coroutine.create(v)
-				coroutine.resume(t,self,action_id,action)
+				coroutine.resume(t,self,action_id,action,new_node)
 			end
 		end
 		new_node.text:set_text(text)
@@ -108,13 +106,13 @@ function M.create(box,text)
 			local event = new_node.event_list.hover
 			for _, v in pairs(event) do
 				local t = coroutine.create(v)
-				coroutine.resume(t,self,action_id,action)
+				coroutine.resume(t,self,action_id,action,new_node)
 			end
 		elseif new_node.enabled and not new_node:pick_node(action.x,action.y) then 
 			local event = new_node.event_list.not_hover
 			for _, v in pairs(event) do
 				local t = coroutine.create(v)
-				coroutine.resume(t,self,action_id,action)
+				coroutine.resume(t,self,action_id,action,new_node)	
 			end
 		end
 	end

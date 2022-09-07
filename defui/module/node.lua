@@ -59,7 +59,7 @@ function M.create(id,parent)
 			local event = new_node.event_list.hide
 			for _, v in pairs(event) do
 				local t = coroutine.create(v)
-				coroutine.resume(t,self,action_id,action)
+				coroutine.resume(t,self,action_id,action,new_node)
 			end
 		else
 			new_node.enabled=false
@@ -80,7 +80,7 @@ function M.create(id,parent)
 			local event = new_node.event_list.show
 			for _, v in pairs(event) do
 				local t = coroutine.create(v)
-				coroutine.resume(t,self,action_id,action)
+				coroutine.resume(t,self,action_id,action,new_node)
 			end
 		elseif gui.is_enabled(new_node.id) then
 			new_node.enabled=true
@@ -112,7 +112,7 @@ function M.create(id,parent)
 		local event = new_node.event_list.delete
 		for _, v in pairs(event) do
 			local t = coroutine.create(v)
-			coroutine.resume(t,self,action_id,action)
+			coroutine.resume(t,self,action_id,action,new_node)
 		end
 	end
 	
