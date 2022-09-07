@@ -308,6 +308,39 @@ function M.create(id,parent)
 	function new_node:pick_node(x,y)
 		return gui.pick_node(new_node.id, x, y)
 	end
+	funct
+	ion new_node:set_text(text)
+		return gui.set_text(text)
+	end
+	
+	function new_node:set_text(text)
+		gui.set_text(new_node.id,text)
+		return new_node
+	end
+
+	function new_node:get_text()
+		return gui.get_text(new_node.id)
+	end
+
+	
+	function new_node:set_outline(outline)
+		gui.set_outline(new_node.id,outline)
+		return new_node
+	end
+	
+	function new_node:get_outline()
+		return gui.get_outline(new_node.id)
+	end
+
+	function new_node:set_font(font)
+		gui.set_font(new_node.id,font)
+		return new_node
+	end
+
+	function new_node:get_font()
+		return gui.get_font(new_node.id)
+	end
+	
 	new_node.initial_position=new_node:get_position()
 	new_node.initial_rotation=new_node:get_rotation()
 	new_node.initial_scale=new_node:get_scale()
