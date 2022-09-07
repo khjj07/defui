@@ -308,9 +308,6 @@ function M.create(id,parent)
 	function new_node:pick_node(x,y)
 		return gui.pick_node(new_node.id, x, y)
 	end
-	function new_node:set_text(text)
-		return gui.set_text(text)
-	end
 	
 	function new_node:set_text(text)
 		gui.set_text(new_node.id,text)
@@ -320,7 +317,6 @@ function M.create(id,parent)
 	function new_node:get_text()
 		return gui.get_text(new_node.id)
 	end
-
 	
 	function new_node:set_outline(outline)
 		gui.set_outline(new_node.id,outline)
