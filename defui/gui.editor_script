@@ -42,15 +42,21 @@ local function parse_gui(data)
 	local line = split(data,"\n")
 	local parent = "nil"
 	local name = nil
+	local template = false
 	for i=1,#line do
 		if string.find(line[i], "id:") then
 			name = split(line[i],"\"")[2]
 		elseif string.find(line[i], "parent: ") then
 			parent = "self.node[\""..split(line[i],"\"")[2].."\"]"
-		elseif string.find(line[i], "nodes") and name then
+		elseif string.find(line[i], "template: ") then
+			template = true
+		elseif string.find(line[i], "nodes") and name and not template then
 			result= result.."\tself.node[\""..name.."\"]=node.create(gui.get_node(\""..name.."\"),"..parent..")\n"
 			parent = "nil"
 			name=nil
+			template = false
+		elseif string.find(line[i], "nodes") and name then
+			template = false
 		end
 		
 	end
