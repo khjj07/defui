@@ -308,8 +308,7 @@ function M.create(id,parent)
 	function new_node:pick_node(x,y)
 		return gui.pick_node(new_node.id, x, y)
 	end
-	funct
-	ion new_node:set_text(text)
+	function new_node:set_text(text)
 		return gui.set_text(text)
 	end
 	
